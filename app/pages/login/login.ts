@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { FacebookLogin } from '../../util/facebook-login'
+import { FacebookLogin } from '../../util/facebook-login';
+import { Fire } from '../../util/fire';
 
 @Component({
   templateUrl: 'build/pages/login/login.html',
@@ -8,13 +9,18 @@ import { FacebookLogin } from '../../util/facebook-login'
 
 export class LoginPage {
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private fire: Fire) {
 
   }
 
   onLogin() {
     FacebookLogin.login(response => {
-      alert(response);
+      this.fire.login(response.accessToken, () => {
+        alert('success');
+      }, error => {
+        alert('error');
+        //alert(error);
+      });
     }, error => {
       alert(error);
     });
